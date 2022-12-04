@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.4.22 <0.9.0;
 /* ERROR: VS Code flag the pragma line with Error message below
 Source file requires different compiler version (current compiler is 0.4.17+commit.bdeb9e52.Emscripten.clang - note that nightly builds are considered to be strictly less than the released versionsolc
 */
