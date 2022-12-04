@@ -22,4 +22,9 @@ Wrong argument count for function call: 2 arguments given but expected 1.solc
   function setCompleted(uint completed) public restricted {
     last_completed_migration = completed;
   }
+
+  function upgrade(address new_address) public restricted {
+    Migrations upgrade = Migrations(new_address);
+    upgrade.setCompleted(last_completed_migration);
+  }
 }
