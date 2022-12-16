@@ -10,10 +10,15 @@ contract ERC721 {
     );
 
   //Mapping from the token Id to the owner
-  mapping(uint => address) private _tokenOwner;
+  mapping(uint256 => address) private _tokenOwner;
 
   //Mapping from onwer to the number of owned tokens
-  mapping(address => uint) private _OwnedTokenCount;
+  mapping(address => uint256) private _OwnedTokenCount;
+
+  //Mapping from token id to aprove addresses 
+  mapping(uint256 => address) private  _tokenApprovals;
+
+
 
     /// @notice Count all NFTs assigned to an owner
     /// @dev NFTs assigned to the zero address are considered invalid, and this
@@ -29,7 +34,7 @@ contract ERC721 {
     ///  about them do throw.
     /// @param _tokenId The identifier for an NFT
     /// @return The address of the owner of the NFT
-  function ownerOf(uint256 _tokenId) external view returns(address){
+  function ownerOf(uint256 _tokenId) public view returns(address){
     address owner = _tokenOwner[_tokenId];
     require(owner != address(0), 'owner query for non-existent token');
     return owner;
@@ -55,5 +60,28 @@ contract ERC721 {
 
     emit Transfer(address(0), to, tokenId);
   }
+
+    /// @notice Transfer ownership of an NFT 
+    /// @dev Throws unless `msg.sender` is the current owner, an authorized
+    ///  operator, or the approved address for this NFT. Throws if `_from` is
+    ///  not the current owner. Throws if `_to` is the zero address. Throws if
+    ///  `_tokenId` is not a valid NFT.
+    /// @param _from The current owner of the NFT
+    /// @param _to The new owner
+    /// @param _tokenId The NFT to transfer
+    function _transferFrom(address _from, address _to, uint256 _tokenId) internal {
+      require(_to != address(0), 'Error - ERC721 Transfer to the zero adddres');
+      require(ownerOf(_tokenId) == _from, 'Trying to transfer a token the address deos not own!');
+      _OwnedTokenCount[_from] -= 1;
+      _OwnedTokenCount[_to] += 1;
+      _tokenOwner[_tokenId] = _to;
+
+      emit Transfer(_from, _to, _tokenId);
+    }
+
+    function transferFrom(address _from, address _to, uint256 _tokenId) public {
+      _transferFrom(_from, _to, _tokenId);
+
+    }
 
 }
